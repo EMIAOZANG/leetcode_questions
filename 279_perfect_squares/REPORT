@@ -1,0 +1,24 @@
+LeetCode 279: Perfect Squares
+
+Description
+===========
+Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+For example, given n = 12, return 3 because 12 = 4 + 4 + 4; given n = 13, return 2 because 13 = 4 + 9.
+
+Methods
+=======
+Dynamic Programming, Math
+
+Solution
+========
+Maintain 2 Vectors, one (PS) for memorizing all perfect square numbers, one (A[1,...,n]) for memorizing answers for each number
+Then we do the following
+
+For each i from 1 to n:
+    if i is a square (check with int(sqrt(i))^2==i):
+        Then Append i to PS.
+        A[i] = 1
+    else
+        A[i] = min(1+A[i-PS[j]]) among all possible PS[j]
+    return A[n]
+

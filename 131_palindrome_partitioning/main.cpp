@@ -2,6 +2,14 @@
 //  main.cpp
 //  leetcode_131
 //
+//  Created by Lu Christopher on 12/23/15.
+//  Copyright © 2015 Lu Christopher. All rights reserved.
+//
+
+//
+//  main.cpp
+//  leetcode_131
+//
 //  Created by Jiayi Lu on 12/22/15.
 //  Copyright © 2015 Jiayi Lu. All rights reserved.
 //
@@ -23,7 +31,7 @@ public:
         }
         for (int k = 1; k < s.length(); k++ ){
             for (int i = 0; i < s.length()-k; i++){
-                P_[i][i+k] = P_[i+1][i+k-1] & (s[i] == s[i+k]);
+                P_[i][i+k] = P_[i+1][i+k-1] && (s[i] == s[i+k]);
             }
         }
         
@@ -41,16 +49,16 @@ public:
             return;
         }
         //search
-        for (int k = 0; k < s.length()-start; k++ ){
-            for (int i = start; i < s.length()-k; i++){
-                if (P_[i][i+k] == true){
-                    stk.push(s.substr(i,k+1));
-                    cout << stk.top() << endl;
-                    addPartition(v, P_, stk, s, i+k+1);
-                    stk.pop();
-                }
+        for ( int i = 0; i < s.length()-start; i++ ){
+            if ( P_[start][start+i] == true ){
+                //if current split is possible keep searching
+                stk.push(s.substr(start,i+1));
+                addPartition(v,P_,stk,s,start+i+1);
+                stk.pop();
+                
             }
         }
+        
     }
     vector<vector<string> > partition(string s){
         vector<vector<bool> > P(s.length()+1, vector<bool>(s.length(),true));
@@ -68,7 +76,8 @@ public:
 int main(){
     Solution sls;
     vector<vector<string> > res;
-    res = sls.partition("aaaab");
+    res = sls.partition("kwtbjmsjvbrwriqwxadwnufplszhqccayvdhhvscxjaqsrmrrqngmuvxnugdzjfxeihogzsdjtvdmkudckjoggltcuybddbjoizu");
     
     return 0;
 }
+

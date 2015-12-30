@@ -6,7 +6,8 @@
 //   In find method, trace back recursively to set the parent of any children to the root of the tree
 //   using parent[i] = find(parent[i]);
 
-//Time Complexity: O
+//Time Complexity: Amortized time of Union and Find is O(alpha(n)), alpha(n) is the inverse function of a very steep function, therefore alpha(n) is almost constant
+
 #include <iostream>
 #include <vector>
 #include <utility>

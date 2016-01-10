@@ -1,3 +1,5 @@
+//Classic Depth Recording BFS, find the first leaf node and return the depth
+//Time Complexity: O(n)
 #include <iostream>
 #include <vector>
 #include <queue>

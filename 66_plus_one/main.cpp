@@ -6,18 +6,23 @@
 using namespace std;
 
 class Solution {
-public:
+    public:
     vector<int> plusOne(vector<int>& digits) {
-      int upgrade = 0;
-      for (int i = digits.size()-1; i >= 0; i--){
-        digits[i] = (digits[i] + 1 + upgrade) % 10;
-        upgrade = (digits[i] + 1 + upgrade) / 10;
-      }
-      if (upgrade == 1){
-        digits.insert(digits.begin(),1);
-      }
-      return digits;
+        int upgrade = 0;
+        for (int i = digits.size()-1; i >= 0; i--){
+            if (i == digits.size()-1){
+                digits[i]++;
+            }
+            digits[i] = digits[i] + upgrade;
+            upgrade = (digits[i] + upgrade) / 10;
+            digits[i] %= 10;
+        }
+        if (upgrade == 1){
+            digits.insert(digits.begin(),1);
+        }
+        return digits;
     }
+    
 };
 
 int main(){

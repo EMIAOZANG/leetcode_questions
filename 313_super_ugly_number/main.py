@@ -7,17 +7,16 @@ class Solution(object):
         :type primes: List[int]
         :rtype: int
         """
-        h = []
-        h.append(1)
-        heapify(h)
-        smallest = 0
-        while len(h) != 0 and n > 0:
-            smallest = heappop(h)
-            for item in primes:
-                if item*smallest not in h:
-                    heappush(h,item*smallest)
-            n -= 1
-        return smallest
+        ptrs = {item:0 for item in primes}
+        ugly_numbers = [1] * (n+1)
+        for i in range(1,n):
+            ugly_numbers[i] = min([key*ugly_numbers[ptrs[key]] for key in ptrs])
+            keys_to_update = [key for key in ptrs.iterkeys() if key*ugly_numbers[ptrs[key]] == ugly_numbers[i]]
+            for key in keys_to_update:
+                ptrs[key] += 1
+
+        return ugly_numbers[-2]
+
 
 sls = Solution()
 P = [2, 7, 13, 19]

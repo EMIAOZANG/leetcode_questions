@@ -2,6 +2,9 @@
 Classic BFS, for each building, propagate distance and maintain a pathSum for the sum of distance,
 Warning:
     MUST make sure the final point is reachable from every building, therefore we maintain a visit_times matrix for times of the node visited in each round of BFS
+
+Essential IDEA for PRUNING!
+    At each time we count how many buildings are reachable from current building, once we have found not all buildings are reachable we could immediately return -1
 """
 from collections import deque
 
@@ -36,6 +39,7 @@ class Solution(object):
             dist = [[1 << 32 for i in range(len(grid[0])+2)] for j in range(len(grid)+2)]
             visit_sum = [[0 for i in range(len(grid[0])+2)] for j in range(len(grid)+2)]
             buildings = []
+            reachable = 0
 
             for i in range(1,len(grid)+1):
                 for j in range(1,len(grid[0])+1):
@@ -59,7 +63,7 @@ class Solution(object):
             for b in buildings:
 #reset marks, dist
                 self.initMatrices(dist,marks,grid)
-
+                reachable = 0
                 q = deque([])
                 q.append(b) #append starting point of BFS
                 while len(q) > 0:
@@ -68,6 +72,9 @@ class Solution(object):
                     visit_sum[src_i][src_j] += 1
 
                     for ofs_i, ofs_j in offsets:
+                        #If current point is a building
+                        if dist[src_i+ofs_i][src_j+ofs_j] == 0 and marks[src_i+ofs_i][src_j+ofs_j] == False:
+                            reachable += 1
                         if marks[src_i+ofs_i][src_j+ofs_j] == True:
                             #mark as visited
                             marks[src_i+ofs_i][src_j+ofs_j] = False
@@ -75,6 +82,8 @@ class Solution(object):
                             q.append([src_i+ofs_i,src_j+ofs_j])
                             #update dist
                             dist[src_i+ofs_i][src_j+ofs_j] = dist[src_i][src_j] + 1
+                if reachable < len(buildings)-1:
+                    return -1
 
                 
             #find min path sum
@@ -93,9 +102,9 @@ class Solution(object):
 
 
 sls = Solution()
-G = [[1,0,2,0,1],[0,0,0,0,0],[0,0,1,0,0]]
 G = [[1,0,0,2,0]]
 G = [[0,2,1],[1,0,2],[0,1,0]]
+G = [[1,0,2,0,1],[0,0,0,0,0],[0,0,1,0,0]]
 print sls.shortestDistance(G) 
 
         

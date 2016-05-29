@@ -1,3 +1,8 @@
+/*
+ * 1. Use a linked list as data cache, so that we could move mem node in O(1)
+ * 2. Use a hashmap of <int, list::iterator> pair to index the mem cache, so we could retrieve nodes in O(1)
+ * Time Complexity: get - O(1), set - O(1)
+ */
 #include <iostream>
 #include <unordered_map>
 #include <list>

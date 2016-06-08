@@ -1,45 +1,44 @@
-class DisjointSet:
-    def __init__(self):
-        self.parents = {}
-        self.numElems = {}
-        self.numSets = 0
+"""
+DFS or BFS or Union-Find
 
-    def Union(self, i, j):
-        p_i = self.parents[i]
-        p_j = self.parents[j]
-        if p_i != p_j:
-            if self.numElems[p_i] >= self.numElems[p_j]:
-                self.parents[j] = self.parents[i] 
-                self.numElems[i] += self.numElems[j]
-                self.numElems[j] = self.numElems[i]
-            else:
-                self.parents[i] = self.parents[j] 
-                self.numElems[j] += self.numElems[i]
-                self.numElems[i] = self.numElems[j]
-            self.numSets -= 1    
+When using DFS, be ware of stackoverflow
 
-    def Find(self, i):
-        if self.parents[i] != self.parents[self.parents[i]]:
-            self.parents[i] = self.Find(self.parents[i])
-        return self.parents[i]
-
-    def Find_noR(self, i):
-        p = self.parents[i]
-        while (p != self.parents[p]):
-            p = self.parents[p]
-        temp = i
-        temp_parent = self.parents[i] 
-        #path compression
-        while self.parents[temp] != p:
-            self.parents[temp] = p
-            temp = temp_parent
-            temp_parent = self.parents[temp]
-        return p
-
+Little Trick: Use extened matrix to 'wrap' the original array
+"""
+from collections import *
 class Solution(object):
+
+    def DFS_traverse(self, ext_grid, row, col):
+        if row >= 0 and col >= 0 and row < len(ext_grid) and col < len(ext_grid[0]) and ext_grid[row][col] == '1':
+            ext_grid[row][col] = '2' #visited
+            for drow, dcol in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                self.DFS_traverse(ext_grid, row + drow, col + dcol)
+        
+    def DFS(self, ext_grid):
+        num_islands = 0
+        for i in xrange(len(ext_grid)):
+            for j in xrange(len(ext_grid[0])):
+                if ext_grid[i][j] == '1':
+                    self.DFS_traverse(ext_grid, i, j)
+                    num_islands += 1
+                    #print i, j, ext_grid
+        return num_islands
+
     def numIslands(self, grid):
         """
         :type grid: List[List[str]]
         :rtype: int
         """
-        ds = DisjointSet()
+        #make ext_grid
+        if len(grid) == 0 or len(grid[0]) == 0:
+            return 0
+        lt_grid = [['0' for i in xrange(len(grid[0]) + 2)]] 
+        for i in xrange(len(grid)):
+            lt_grid.append(['0'] + grid[i][:] + ['0'])
+        lt_grid.append(['0' for i in xrange(len(grid[0]) + 2)])
+        
+        #print lt_grid
+        
+        #compute number of islands
+        return self.DFS(lt_grid)
+        

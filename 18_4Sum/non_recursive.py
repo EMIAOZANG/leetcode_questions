@@ -15,14 +15,14 @@ class Solution:
             if nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target:
                 break
             if nums[i] + nums[n - 1] + nums[n - 2] + nums[n - 3] < target:
-                break
+                continue 
             for j in xrange(i + 1, n - 2):
                 if j > i + 1 and nums[j] == nums[j - 1]:
                     continue
                 if nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target:
                     break
                 if nums[i] + nums[j] + nums[n - 1] + nums[n - 2] < target:
-                    break
+                    continue 
                 for k in xrange(j + 1, n - 1):
                     if k > j + 1 and nums[k] == nums[k - 1]:
                         continue
